@@ -1,4 +1,4 @@
-cd#!/bin/bash
+#!/bin/bash
 
 
 # Installer les dépendances du projet
