@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const { grid } = useGameState()
 const { handleTouchStart, handleTouchEnd } = useGameControls()
+// Erreur de type : assignation d'une string à un number
+//const myNumber: number = "Hello"
 </script>
 
 <template>
