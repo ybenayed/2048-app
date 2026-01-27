@@ -1,4 +1,4 @@
-#!/bin/bash
+cd#!/bin/bash
 
 # Installer les dépendances du projet
 pnpm install
