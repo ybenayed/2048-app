@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Se placer dans le répertoire parent
-cd "$(dirname "$0")/.."
 
 # Installer les dépendances du projet
 pnpm install
