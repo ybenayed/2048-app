@@ -19,12 +19,45 @@ pnpm add -D vue-tsc
 pnpm vue-tsc --noEmit
 
 
-
+#installer l'eslint si pas encore fait
+pnpm eslint 
 
 # Exécuter les tests avec vitest
 echo "=========================================="
 echo "Exécution des tests unitaires avec vitest"
 echo "=========================================="
 pnpm exec vitest run
+
+# Construire le package avec Vite dans dist/
+echo "=========================================="
+echo "Construction avec vite build (dist/)"
+echo "=========================================="
+pnpm exec vite build
+
+# Construire le package avec Vite dans publish/
+echo "=========================================="
+echo "Construction avec vite build (publish/)"
+echo "=========================================="
+pnpm exec vite build --outDir publish
+
+# Vérifier que le package est bien créé
+echo "=========================================="
+echo "Vérification du package dans publish/"
+echo "=========================================="
+ls -lh publish/
+
+echo ""
+echo "=========================================="
+echo "✅ Pipeline terminé avec succès!"
+echo "=========================================="
+echo ""
+echo "Pour tester l'application localement:"
+echo "  cd /home/manal/2048-app"
+echo "  pnpm exec vite preview"
+echo ""
+echo "L'application sera disponible sur http://localhost:4173/"
+
+
+
 
 
