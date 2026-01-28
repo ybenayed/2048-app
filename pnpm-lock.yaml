@@ -50,6 +50,7 @@ importers:
         version: 2.1.0
       eslint-plugin-vue:
         specifier: ^10.7.0
+<<<<<<< HEAD
         version: 10.7.0(@stylistic/eslint-plugin@5.7.1(eslint@9.39.2(jiti@2.6.1)))(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(vue-eslint-parser@10.2.0(eslint@9.39.2(jiti@2.6.1)))
       happy-dom:
         specifier: ^20.3.9
@@ -60,6 +61,12 @@ importers:
       vite:
         specifier: ^7.3.1
         version: 7.3.1(@types/node@25.0.10)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
+=======
+        version: 10.7.0(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(vue-eslint-parser@10.2.0(eslint@9.39.2(jiti@2.6.1)))
+      happy-dom:
+        specifier: ^20.3.9
+        version: 20.3.9
+>>>>>>> refs/remotes/origin/lab2
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@25.0.10)(@vitest/ui@4.0.18)(happy-dom@20.3.9)(jiti@2.6.1)(lightningcss@1.31.1)(terser@5.46.0)(yaml@2.8.2)
