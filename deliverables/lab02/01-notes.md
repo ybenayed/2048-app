@@ -16,4 +16,4 @@
 - L’outil est installé dans le projet avec les plugins Vue et TypeScript, et configuré via le fichier eslint.config.js.
 - L’analyse a été exécutée avec la commande pnpm eslint ./app --ext .ts,.vue.
 - Une erreur volontaire (variable non utilisée dans Board.vue) a permis de vérifier qu’ESLint remonte correctement les erreurs.
-- L’erreur est détectée à la fois par l’IDE et par la CLI, confirmant le bon fonctionnement de l’outil.
+- L’erreur est détectée à la fois par l’IDE et par la CLI, confirmant le bon fonctionnement de l’outil.- Un script de linting a été ajouté au package.json : "lint": "eslint ./app --ext .ts,.vue" pour faciliter l'exécution de l'analyse dans le workflow du projet.
