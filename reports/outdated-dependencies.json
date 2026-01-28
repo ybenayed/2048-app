@@ -1,0 +1,30 @@
+{
+  "eslint-define-config": {
+    "current": "2.1.0",
+    "latest": "2.1.0",
+    "wanted": "2.1.0",
+    "isDeprecated": true,
+    "dependencyType": "devDependencies"
+  },
+  "happy-dom": {
+    "current": "20.3.9",
+    "latest": "20.4.0",
+    "wanted": "20.3.9",
+    "isDeprecated": false,
+    "dependencyType": "devDependencies"
+  },
+  "nuxt": {
+    "current": "4.2.2",
+    "latest": "4.3.0",
+    "wanted": "4.2.2",
+    "isDeprecated": false,
+    "dependencyType": "dependencies"
+  },
+  "@nuxt/fonts": {
+    "current": "0.12.1",
+    "latest": "0.13.0",
+    "wanted": "0.12.1",
+    "isDeprecated": false,
+    "dependencyType": "dependencies"
+  }
+}

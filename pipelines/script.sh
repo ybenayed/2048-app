@@ -22,6 +22,13 @@ pnpm vue-tsc --noEmit
 #installer l'eslint si pas encore fait
 pnpm eslint 
 
+# Identifier les dépendances à mettre à jour et sauvegarder en JSON
+echo "Identification des dépendances outdated"
+mkdir -p reports
+pnpm outdated --format json > reports/outdated-dependencies.json || echo "Aucune dépendance outdated"
+echo "Rapport sauvegardé dans reports/outdated-dependencies.json"
+echo ""
+
 # Exécuter les tests avec vitest
 echo "=========================================="
 echo "Exécution des tests unitaires avec vitest"
