@@ -17,3 +17,11 @@
 - L’analyse a été exécutée avec la commande pnpm eslint ./app --ext .ts,.vue.
 - Une erreur volontaire (variable non utilisée dans Board.vue) a permis de vérifier qu’ESLint remonte correctement les erreurs.
 - L’erreur est détectée à la fois par l’IDE et par la CLI, confirmant le bon fonctionnement de l’outil.
+## Construction du "package" à déployer
+-Vite est un build tool moderne qui compile le code source Vue.js en fichiers optimisés (JavaScript, CSS, HTML) prêts pour la production, avec un serveur de développement rapide utilisant les ES modules natifs.
+
+-La commande pnpm vite build crée un bundle optimisé (minifié et compressé) dans le répertoire configuré (publish dans notre cas), qui est l'artefact à déployer en production.
+
+-Les répertoires de build doivent être ignorés par Git (ajoutés au .gitignore) car ils sont générés automatiquement et ne doivent pas être versionnnés dans le contrôle de source.
+
+-pnpm vite preview permet de tester le bundle final localement avant déploiement, garantissant que l'application fonctionne correctement en mode production avec les optimisations appliquées.
