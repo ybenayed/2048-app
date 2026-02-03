@@ -3,7 +3,7 @@ const { grid } = useGameState()
 const { handleTouchStart, handleTouchEnd } = useGameControls()
 // Erreur de type : assignation d'une string à un number
 //const myNumber: number = "Hello"
-//const a = 42
+const a = 42
 </script>
 
 <template>
