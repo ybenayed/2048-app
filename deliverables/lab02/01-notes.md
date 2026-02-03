@@ -25,3 +25,11 @@
 -Les répertoires de build doivent être ignorés par Git (ajoutés au .gitignore) car ils sont générés automatiquement et ne doivent pas être versionnnés dans le contrôle de source.
 
 -pnpm vite preview permet de tester le bundle final localement avant déploiement, garantissant que l'application fonctionne correctement en mode production avec les optimisations appliquées.
+## Exécution des tests
+-Vitest est un framework de test moderne natif à Vite avec une API compatible Jest, offrant des tests rapides et intégrés au processus de développement.
+
+-Les tests unitaires vérifient le comportement des composants en testant des cas spécifiques (ex: vérifier que la tuile avec la valeur 2 a la classe CSS bg-amber-100).
+
+-Les tests doivent être exécutés régulièrement dans le pipeline CI/CD avant le build pour s'assurer que le code fonctionne correctement et détecter les régressions.
+
+-Les tests passent/échouent clairement : les messages d'erreur précis de Vitest aident à identifier rapidement les problèmes ("expected '4' to contain '2'"), facilitant la correction du code.
