@@ -16,6 +16,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # Étape 2 : afficher un message dans les logs
-      - name: Say Hello
-        run: echo "Hello pipelines' world!"
+      # Étape 2 : configurer pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      # Étape 3 : configurer Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      # Étape 4 : exécuter le script du lab 2
+      - name: Run lab2 script
+        run: bash deliverables/lab02/script.sh
