@@ -15,9 +15,31 @@ jobs:
 
       - name: Say Hello
         run: echo "Hello pipelines' world!"
+      
       - name: Display runner info
         run: |
           echo "Running on: $(uname -a)"
           echo "Workflow: ${{ github.workflow }}"
           echo "Triggerered by: ${{ github.event_name }}"
           echo "Repository: ${{ github.repository }}"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Execute Lab 2 Script
+        run: bash deliverables/lab02/lab2.sh
+
+      - name: Upload Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab2-reports
+          path: reports/
