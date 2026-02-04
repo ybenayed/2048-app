@@ -17,3 +17,19 @@
 - L’analyse a été exécutée avec la commande pnpm eslint ./app --ext .ts,.vue.
 - Une erreur volontaire (variable non utilisée dans Board.vue) a permis de vérifier qu’ESLint remonte correctement les erreurs.
 - L’erreur est détectée à la fois par l’IDE et par la CLI, confirmant le bon fonctionnement de l’outil.- Un script de linting a été ajouté au package.json : "lint": "eslint ./app --ext .ts,.vue" pour faciliter l'exécution de l'analyse dans le workflow du projet.
+## Construction du "package" à déployer
+-Vite est un build tool moderne qui compile le code source Vue.js en fichiers optimisés (JavaScript, CSS, HTML) prêts pour la production, avec un serveur de développement rapide utilisant les ES modules natifs.
+
+-La commande pnpm vite build crée un bundle optimisé (minifié et compressé) dans le répertoire configuré (publish dans notre cas), qui est l'artefact à déployer en production.
+
+-Les répertoires de build doivent être ignorés par Git (ajoutés au .gitignore) car ils sont générés automatiquement et ne doivent pas être versionnnés dans le contrôle de source.
+
+-pnpm vite preview permet de tester le bundle final localement avant déploiement, garantissant que l'application fonctionne correctement en mode production avec les optimisations appliquées.
+## Exécution des tests
+-Vitest est un framework de test moderne natif à Vite avec une API compatible Jest, offrant des tests rapides et intégrés au processus de développement.
+
+-Les tests unitaires vérifient le comportement des composants en testant des cas spécifiques (ex: vérifier que la tuile avec la valeur 2 a la classe CSS bg-amber-100).
+
+-Les tests doivent être exécutés régulièrement dans le pipeline CI/CD avant le build pour s'assurer que le code fonctionne correctement et détecter les régressions.
+
+-Les tests passent/échouent clairement : les messages d'erreur précis de Vitest aident à identifier rapidement les problèmes ("expected '4' to contain '2'"), facilitant la correction du code.
