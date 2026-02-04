@@ -1,0 +1,21 @@
+name: Hello Pipeline  # Nom de la pipeline
+
+# Déclenche la pipeline quand on push sur main ou lab3
+on:
+  push:
+    branches: 
+      - main
+      - lab3
+
+jobs:
+  hello-job:               # Nom du job
+    runs-on: ubuntu-latest  # Utiliser une machine Ubuntu
+
+    steps:
+      # Étape 1 : récupérer le code du repo
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Étape 2 : afficher un message dans les logs
+      - name: Say Hello
+        run: echo "Hello pipelines' world!"
