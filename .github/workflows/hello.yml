@@ -7,21 +7,11 @@ on:
   pull_request:
 
 jobs:
-  hello:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Say Hello
-        run: echo "Hello pipelines' world!"
-
-      - name: Display runner info
-        run: |
-          echo "Running on: $(uname -a)"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Triggerered by: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -34,13 +24,30 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
-      - name: Execute Lab 2 Script
-        run: bash deliverables/lab02/lab2.sh
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Upload Reports
-        if: always()
+      - name: Type check
+        run: pnpm nuxt typecheck
+
+      - name: Lint
+        run: pnpm eslint .
+
+      - name: Build package
+        run: pnpm nuxt build
+
+      - name: Run tests
+        run: pnpm vitest run
+
+      - name: Smoke test package
+        run: |
+          pnpm nuxt preview --port 3000 --hostname 127.0.0.1 &
+          sleep 5
+          curl -f http://127.0.0.1:3000/
+
+      - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lab2-reports
-          path: reports/
+          name: nuxt-package
+          path: .output
 
