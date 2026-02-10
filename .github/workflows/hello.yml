@@ -11,7 +11,7 @@ on:
   workflow_dispatch:  # permet de lancer manuellement
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
 
