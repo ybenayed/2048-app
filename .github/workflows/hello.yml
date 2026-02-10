@@ -22,7 +22,7 @@ jobs:
           echo "Workflow: ${{ github.workflow }}"
           echo "Triggerered by: ${{ github.event_name }}"
           echo "Repository: ${{ github.repository }}"
-
+      
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
