@@ -1,0 +1,126 @@
+name: Hello Pipeline
+
+on:
+  push:
+    branches:
+      - lab3
+      - "feature/*"
+  pull_request:
+  schedule:
+    - cron: "00 08 * * *" # Tous les jours à 8h (UTC)
+  workflow_dispatch:  # permet de lancer manuellement
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+
+  # =========================
+  # INSTALL DEPENDENCIES
+  # =========================
+  install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+  # =========================
+  # LINT (parallèle)
+  # =========================
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm eslint .
+
+  # =========================
+  # TYPECHECK (parallèle)
+  # =========================
+  typecheck:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm nuxt typecheck
+
+  # =========================
+  # TESTS (parallèle)
+  # =========================
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm vitest run
+
+  # =========================
+  # BUILD (après succès)
+  # =========================
+  build:
+    needs: [lint, typecheck, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm nuxt build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuxt-package
+          path: .output
