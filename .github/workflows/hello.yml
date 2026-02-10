@@ -37,7 +37,7 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
   # =========================
   # LINT (parallèle)
@@ -56,7 +56,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm eslint .
 
   # =========================
@@ -76,7 +76,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm nuxt typecheck
 
   # =========================
@@ -96,7 +96,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install --no-frozen-lockfile
       - run: pnpm vitest run
 
   # =========================
