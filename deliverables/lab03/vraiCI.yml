@@ -1,0 +1,53 @@
+name: Hello Pipeline
+
+on:
+  push:
+    branches:
+      - lab3
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Type check
+        run: pnpm nuxt typecheck
+
+      - name: Lint
+        run: pnpm eslint .
+
+      - name: Build package
+        run: pnpm nuxt build
+
+      - name: Run tests
+        run: pnpm vitest run
+
+      - name: Smoke test package
+        run: |
+          pnpm nuxt preview --port 3000 --host=127.0.0.1 &
+          sleep 5
+          curl -f http://127.0.0.1:3000/
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuxt-package
+          path: .output
+
