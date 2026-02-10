@@ -1,0 +1,29 @@
+name: Run Lab 2 Script
+
+on:
+  push:
+    branches:
+      - lab3
+  workflow_dispatch:
+
+jobs:
+  lab2-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@8 --activate
+          pnpm --version
+
+      - name: Run Lab 2 script
+        run: bash deliverables/lab02/lab2.sh
