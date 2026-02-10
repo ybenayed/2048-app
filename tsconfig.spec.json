@@ -2,7 +2,7 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "types": ["vitest/globals", "node"]
+    "types": ["vitest/globals", "node", "vite/client"]
   },
-  "include": ["app/**/*.spec.ts", "app/**/*.test.ts"]
+  "include": ["app/**/*.spec.ts", "app/**/*.test.ts", "app/**/*.vue", "app/composables/**/*.ts"]
 }

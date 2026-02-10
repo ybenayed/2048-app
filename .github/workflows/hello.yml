@@ -1,45 +1,94 @@
-name: Hello Pipeline  
+name: Hello Pipeline
 
 on:
   push:
-    branches: 
+    branches:
       - lab3
-        
+      - "feature/*"
+  pull_request:
+  schedule:
+    - cron: "15 23 * * *" # Tous les jours à 8h (UTC)
+  workflow_dispatch:  # permet de lancer manuellement
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  hello-job:              
-    runs-on: ubuntu-latest  
+
+  # =========================
+  # INSTALL DEPENDENCIES
+  # =========================
+  install:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Say Hello
-        run: echo "Hello pipelines' world!"
-      
-      - name: Display runner info
-        run: |
-          echo "Running on: $(uname -a)"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Triggerered by: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
-      
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: 20
+          cache: "pnpm"
 
-      - name: Execute Lab 2 Script
-        run: bash deliverables/lab02/lab2.sh
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - name: Upload Reports
-        if: always()
+  # =========================
+  # LINT (parallèle)
+  # =========================
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm eslint .
+
+  # =========================
+  # TYPECHECK (parallèle)
+  # =========================
+  typecheck:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm nuxt typecheck
+
+  # =========================
+  # TESTS (parallèle)
+  # =========================
+  test:
+    needs: install
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm vitest run
+
+  # =========================
+  # BUILD (après succès)
+  # =========================
+  build:
+    needs: [lint, typecheck, test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm nuxt build
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: lab2-reports
-          path: reports/
+          name: nuxt-package
+          path: .output
