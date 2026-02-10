@@ -48,6 +48,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - run: pnpm install --frozen-lockfile
       - run: pnpm eslint .
 
@@ -60,6 +68,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - run: pnpm install --frozen-lockfile
       - run: pnpm nuxt typecheck
 
@@ -72,6 +88,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - run: pnpm install --frozen-lockfile
       - run: pnpm vitest run
 
@@ -84,6 +108,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - run: pnpm install --frozen-lockfile
       - run: pnpm nuxt build
 
