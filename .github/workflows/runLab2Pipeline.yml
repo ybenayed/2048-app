@@ -11,24 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Récupérer le code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Installer Node.js (sans cache pnpm)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'   # IMPORTANT : pas pnpm ici
 
-      # Activer pnpm AVEC Corepack
       - name: Enable pnpm
         run: |
           corepack enable
           corepack prepare pnpm@8 --activate
           pnpm --version
 
-      #  Lancer ton script
       - name: Run Lab 2 script
         run: bash deliverables/lab02/lab2.sh
