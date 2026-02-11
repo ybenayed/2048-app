@@ -7,8 +7,8 @@ on:
       - "feature/*"
   pull_request:
   schedule:
-    - cron: "00 08 * * *" 
-  workflow_dispatch:  
+    - cron: "15 23 * * *" # Tous les jours à 8h (UTC)
+  workflow_dispatch:  # permet de lancer manuellement
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: false
