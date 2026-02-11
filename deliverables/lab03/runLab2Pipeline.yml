@@ -27,3 +27,4 @@ jobs:
 
       - name: Run Lab 2 script
         run: bash deliverables/lab02/lab2.sh
+
