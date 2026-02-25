@@ -56,7 +56,7 @@ jobs:
         run: pnpm install
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm dlx eslint 
 
   build-and-test:
     name: Build, test & publish artifact
