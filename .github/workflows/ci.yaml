@@ -85,6 +85,7 @@ jobs:
         run: pnpm test
 
       - name: Upload build artifact
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v6
         with:
           name: 2048-app-build
