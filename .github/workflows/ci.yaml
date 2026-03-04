@@ -30,7 +30,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
+
           node-version: ${{ env.NODE_VERSION }}
+
           cache: pnpm
 
       - name: Install dependencies
@@ -38,6 +40,7 @@ jobs:
 
       - name: Build
         run: pnpm build
+
 
       - name: Upload build output
         uses: actions/upload-artifact@v6
@@ -57,7 +60,9 @@ jobs:
           name: build-output
           path: .output/
 
+
       - name: Upload build artifact
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v6
         with:
           name: 2048-app-build
