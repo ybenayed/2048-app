@@ -1,7 +1,6 @@
-name: CI Yasmine
-
+name: CI
 env:
-  NODE_VERSION: 22
+    NODE_VERSION :22 
 
 on:
   push:
@@ -28,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
       - name: Install dependencies
@@ -43,6 +42,8 @@ jobs:
         with:
           name: 2048-app-build
           path: .output/
+          retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 1 }}
+
 
   lint:
     runs-on: ubuntu-latest
@@ -59,7 +60,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
       - name: Install dependencies
@@ -83,7 +84,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
       - name: Install dependencies
@@ -107,7 +108,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
       - name: Install dependencies
