@@ -1,14 +1,15 @@
-name: CI
+name: CI Yasmine
+
 env:
-    NODE_VERSION :22 
+  NODE_VERSION: '22'
 
 on:
   push:
-    branches: [ main ]
+    branches: [ lab4 ]
     paths-ignore:
       - 'docs/**'
   pull_request:
-    branches: [ main ]
+    branches: [ lab4 ]
     paths-ignore:
       - 'docs/**'
   workflow_dispatch:
@@ -28,10 +29,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -61,10 +62,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: pnpm lint
@@ -85,10 +86,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Type checking
         run: pnpm typecheck
@@ -109,10 +110,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run tests
         run: pnpm test
