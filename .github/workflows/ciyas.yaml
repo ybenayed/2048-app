@@ -1,7 +1,8 @@
 name: CI Yasmine
+
 env:
-    NODE_VERSION :22 
-    
+  NODE_VERSION: 22
+
 on:
   push:
     branches: [ main ]
