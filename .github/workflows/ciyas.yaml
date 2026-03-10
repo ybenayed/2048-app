@@ -1,48 +1,51 @@
 name: CI Yasmine
 
 env:
-    NODE_VERSION :22 
+  NODE_VERSION: 22
 
 on:
   push:
-    branches: [ lab4 ]
+    branches: [lab4]
     paths-ignore:
       - 'docs/**'
+
   pull_request:
-    branches: [ lab4 ]
+    branches: [lab4]
     paths-ignore:
       - 'docs/**'
+
   workflow_dispatch:
     inputs:
       launchStatiticAnalyse:
         description: 'Whether to launch static analysis (lint and typecheck) or not'
         required: false
         type: boolean
-        default: 'true'
-        environment:
-          description: ''
-          required: false
-          type: choise
-          options :
-              -dev
-              -prod
-              -QA
-              -UAT
-        
+        default: true
+
+      environment:
+        description: 'Deployment environment'
+        required: false
+        type: choice
+        options:
+          - dev
+          - prod
+          - QA
+          - UAT
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
@@ -55,12 +58,11 @@ jobs:
 
       - name: Upload build artifact
         if: github.event_name == 'push'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: 2048-app-build
           path: .output/
           retention-days: ${{ github.ref == 'refs/heads/main' && 7 || 1 }}
-
 
   lint:
     runs-on: ubuntu-latest
@@ -68,23 +70,15 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Lint
-        run: pnpm lint
+      - run: pnpm install
+      - run: pnpm lint
 
   typecheck:
     runs-on: ubuntu-latest
@@ -92,23 +86,15 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Type checking
-        run: pnpm typecheck
+      - run: pnpm install
+      - run: pnpm typecheck
 
   test:
     runs-on: ubuntu-latest
@@ -116,31 +102,23 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
-      - name: Install dependencies
-        run: pnpm install
+      - run: pnpm install
+      - run: pnpm test
 
-      - name: Run tests
-        run: pnpm test
-
-deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'workflow_dispatch'
 
     steps:
-      - name: deploy to environment
-        run: echo "Deployeing to $ENVIRONMENT"
-        ENV:
-          ENVIRONMENT :${{inputs.environment}}
+      - name: Deploy to environment
+        run: echo "Deploying to $ENVIRONMENT"
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
