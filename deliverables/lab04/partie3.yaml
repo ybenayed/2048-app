@@ -4,11 +4,11 @@ env:
 
 on:
   push:
-    branches: [ lab4, main ]
+    branches: [ main ]
     paths-ignore:
       - 'docs/**'
   pull_request:
-    branches: [ lab4,  main ]
+    branches: [ main ]
     paths-ignore:
       - 'docs/**'
   workflow_dispatch:

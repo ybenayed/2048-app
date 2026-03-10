@@ -18,15 +18,15 @@ on:
         required: false
         type: boolean
         default: 'true'
-       environment:
-        description: ''
-        required: false
-        type: choise
-        options :
-            -dev
-            -prod
-            -QA
-            -UAT
+        environment:
+          description: ''
+          required: false
+          type: choise
+          options :
+              -dev
+              -prod
+              -QA
+              -UAT
         
 
 jobs:
