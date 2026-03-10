@@ -1,18 +1,34 @@
 name: CI Yasmine
 
 env:
-  NODE_VERSION: '22'
+    NODE_VERSION :22 
 
 on:
   push:
-    branches: [ lab4 ]
+    branches: [ main ]
     paths-ignore:
       - 'docs/**'
   pull_request:
-    branches: [ lab4 ]
+    branches: [ main ]
     paths-ignore:
       - 'docs/**'
   workflow_dispatch:
+    inputs:
+      launchStatiticAnalyse:
+        description: 'Whether to launch static analysis (lint and typecheck) or not'
+        required: false
+        type: boolean
+        default: 'true'
+        environment:
+          description: ''
+          required: false
+          type: choise
+          options :
+              -dev
+              -prod
+              -QA
+              -UAT
+        
 
 jobs:
   build:
@@ -29,10 +45,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build
         run: pnpm build
@@ -62,10 +78,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Lint
         run: pnpm lint
@@ -86,10 +102,10 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Type checking
         run: pnpm typecheck
@@ -110,10 +126,21 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Run tests
         run: pnpm test
+
+deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: deploy to environment
+        run: echo "Deployeing to $ENVIRONMENT"
+        ENV:
+          ENVIRONMENT :${{inputs.environment}}
