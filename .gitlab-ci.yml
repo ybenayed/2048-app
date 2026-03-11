@@ -1,0 +1,30 @@
+workflow:
+
+stages:
+  - build
+  - test
+  - analyses
+
+build:
+  stage: build
+  script:
+    - echo "build"
+
+
+test:
+  stage: test
+  needs: ["build"]
+  script:
+    - echo "test"
+
+lint:
+  stage: analyses
+  needs: ["build"]
+  script:
+    - echo "lint"
+
+typecheck:
+  stage: analyses
+  needs: ["build"]
+  script:
+    - echo "typecheck"
