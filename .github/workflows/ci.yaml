@@ -1,19 +1,41 @@
-name: Hello World !
+name: Lab 05 Init
 
 on:
+  push:
+    branches:
+      - main
+      - lab05
   workflow_dispatch:
 
+env:
+  NODE_VERSION: 22
+
 jobs:
-  hello:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Say Hello
-        run: echo "Hello pipelines' world !"
-      
-      - name: Display runner info
-        run: |
-          echo "Running on: $(uname -a)"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Triggered by: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: 2048-app-build
+          path: .output/
+          retention-days: 1
