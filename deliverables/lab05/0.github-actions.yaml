@@ -3,6 +3,7 @@ name: Lab 05 CI/CD
 on:
   push:
     branches:
+      - main
       - lab5
   pull_request:
     branches:
@@ -18,64 +19,63 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
 
-      - name: Install dependencies
-        run: pnpm install
+      - run: pnpm install
+      - run: pnpm build
 
-      - name: Build application
-        run: pnpm build
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: .output/
-
-  #  PREVIEW (automatique sur PR)
+  #  PREVIEW
   deploy-preview:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
         with:
-          name: build
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
 
-      - name: Deploy to Vercel Preview
-        run: |
-          npx vercel --token=${{ secrets.VERCEL_TOKEN }} --yes
+      - run: pnpm install
+      - run: pnpm build
 
-  #  PRODUCTION (manuel)
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy Preview
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes
+  #  PRODUCTION
   deploy-production:
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch'
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
         with:
-          name: build
+          node-version: 22
 
-      - name: Deploy to Vercel Production
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy Production
         run: |
-          npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
