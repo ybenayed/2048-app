@@ -55,8 +55,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - run: pnpm install
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
 
       - name: Deploy Production
         run: |
-          npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
