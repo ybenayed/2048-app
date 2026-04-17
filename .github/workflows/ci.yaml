@@ -1,19 +1,81 @@
-name: Hello World !
+name: Lab 05 CI/CD
 
 on:
+  push:
+    branches:
+      - main
+      - lab5
+  pull_request:
+    branches:
+      - main
+      - lab5
   workflow_dispatch:
 
+env:
+  NODE_VERSION: 22
+
 jobs:
-  hello:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Say Hello
-        run: echo "Hello pipelines' world !"
-      
-      - name: Display runner info
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm build
+
+  #  PREVIEW
+  deploy-preview:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install
+      - run: pnpm build
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy Preview
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --yes
+  #  PRODUCTION
+  deploy-production:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy Production
         run: |
-          echo "Running on: $(uname -a)"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Triggered by: ${{ github.event_name }}"
-          echo "Repository: ${{ github.repository }}"
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
