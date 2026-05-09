@@ -22,9 +22,9 @@ const staticSite = new azure_native.web.StaticSite("staticSite", {
     },
 });
 
-const listStaticSitesSecretsOutput = azure_native.web.listStaticSitesOutput({
+const listStaticSitesSecretsOutput = azure_native.web.listStaticSiteSecretsOutput({
     resourceGroupName: resourceGroup.name,
-    staticSiteName: staticSite.name
+    name: staticSite.name 
 });
 
 // Export
